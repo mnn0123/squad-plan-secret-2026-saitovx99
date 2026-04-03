@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Squad beyond プラン提案資料</title>
+<style>
+  :root {
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --purple-dark: #3C3489;
+    --green: #3B6D11;
+    --green-light: #EAF3DE;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --amber-light: #FAEEDA;
+    --amber-dark: #412402;
+    --text: #1a1a1a;
+    --text-sub: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --bg: #f8f8f6;
+    --card: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  header { margin-bottom: 32px; }
+  header h1 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  header p { font-size: 13px; color: var(--text-sub); }
+  .header-badge { display: inline-block; background: var(--purple-light); color: var(--purple-dark); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; margin-bottom: 10px; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 1.5px solid var(--border); margin-bottom: 28px; }
+  .tab-btn { padding: 10px 20px; border: none; background: none; font-size: 13px; font-weight: 600; color: var(--text-sub); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1.5px; border-radius: 6px 6px 0 0; transition: color .15s; }
+  .tab-btn:hover { color: var(--purple); }
+  .tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .billing-toggle { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .billing-toggle span { font-size: 13px; color: var(--text-sub); }
+  .bill-btn { padding: 6px 18px; border-radius: 99px; border: 1.5px solid var(--border); background: var(--card); font-size: 13px; font-weight: 600; cursor: pointer; color: var(--text-sub); transition: all .15s; }
+  .bill-btn.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+
+  .plans-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .plan-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .plan-card.enterprise { background: #f4f4f2; }
+  .plan-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .plan-price { font-size: 20px; font-weight: 700; color: var(--text); }
+  .plan-price small { font-size: 11px; font-weight: 400; color: var(--text-sub); }
+  .plan-users { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+  .save-badge { display: inline-block; font-size: 10px; background: var(--green-light); color: var(--green); padding: 2px 7px; border-radius: 4px; margin-top: 6px; font-weight: 600; }
+
+  .section-label { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: .08em; margin: 24px 0 10px; }
+
+  table.compare { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compare th { font-size: 11px; font-weight: 700; color: var(--text-sub); padding: 6px 8px; border-bottom: 1.5px solid var(--border); text-align: center; background: #fafaf8; }
+  .compare th:first-child { text-align: left; width: 30%; }
+  .compare td { padding: 8px 8px; border-bottom: 1px solid var(--border); text-align: center; }
+  .compare td:first-child { text-align: left; color: var(--text-sub); }
+  .compare tr:last-child td { border-bottom: none; }
+  .ck { color: #2d8a4e; font-weight: 700; }
+  .cx { color: #c0392b; font-weight: 700; }
+  .inf { color: var(--blue); font-weight: 700; }
+
+  .merit-box { border-radius: var(--radius); padding: 14px 16px; margin-top: 12px; }
+  .merit-box.purple { background: var(--purple-light); }
+  .merit-box.green { background: var(--green-light); }
+  .merit-box.blue { background: var(--blue-light); }
+  .merit-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .merit-box.purple .merit-title { color: var(--purple-dark); }
+  .merit-box.green .merit-title { color: #27500A; }
+  .merit-box.blue .merit-title { color: #0C447C; }
+  .merit-item { font-size: 12px; padding: 2px 0; display: flex; gap: 6px; line-height: 1.5; }
+  .merit-box.purple .merit-item { color: var(--purple); }
+  .merit-box.green .merit-item { color: var(--green); }
+  .merit-box.blue .merit-item { color: var(--blue); }
+  .merit-item::before { content: "→"; flex-shrink: 0; opacity: .7; }
+
+  .note { font-size: 11px; color: var(--text-sub); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); line-height: 1.8; }
+
+  .campaign-bar { background: var(--amber-light); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--amber-dark); font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .campaign-bar::before { content: "★"; font-size: 14px; color: #BA7517; }
+
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .opt-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .opt-card.span2 { grid-column: span 2; }
+  .opt-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .opt-price { font-size: 12px; color: var(--blue); font-weight: 700; margin-bottom: 8px; }
+  .opt-desc { font-size: 12px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; }
+  .opt-merits-title { font-size: 10px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .opt-merit { font-size: 12px; padding: 2px 0; display: flex; gap: 5px; line-height: 1.5; }
+  .opt-merit::before { content: "✓"; color: var(--green); flex-shrink: 0; font-weight: 700; }
+  .opt-target { font-size: 11px; color: var(--text-sub); background: var(--bg); border-radius: 6px; padding: 6px 9px; margin-top: 10px; line-height: 1.6; }
+  .opt-merits-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+
+  .ent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .ent-card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px; }
+  .ent-range { font-size: 14px; font-weight: 700; }
+  .ent-price { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+
+  table.summary { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .summary th { font-size: 11px; font-weight: 700; color: var(--text-sub); padding: 7px 10px; border-bottom: 1.5px solid var(--border); text-align: left; background: #fafaf8; }
+  .summary td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  .summary tr:last-child td { border-bottom: none; }
+  .summary tr:hover td { background: #fafaf8; }
+  .pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+  .pill-purple { background: var(--purple-light); color: var(--purple-dark); }
+  .pill-green { background: var(--green-light); color: #27500A; }
+  .pill-blue { background: var(--blue-light); color: #0C447C; }
+  .pill-amber { background: var(--amber-light); color: var(--amber-dark); }
+
+  @media (max-width: 680px) {
+    .plans-grid { grid-template-columns: 1fr 1fr; }
+    .opts-grid { grid-template-columns: 1fr; }
+    .opt-card.span2 { grid-column: span 1; }
+    .opt-merits-inner { grid-template-columns: 1fr; }
+    .ent-grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="header-badge">提案資料</div>
+    <h1>Squad beyond プラン比較 &amp; 提案ガイド</h1>
+    <p>プラン・オプション・エンタープライズ料金・提案シナリオをまとめた資料です</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="setTab('plans',this)">プラン比較</button>
+    <button class="tab-btn" onclick="setTab('opts',this)">拡張オプション</button>
+    <button class="tab-btn" onclick="setTab('ent',this)">エンタープライズ</button>
+    <button class="tab-btn" onclick="setTab('sum',this)">提案まとめ</button>
+  </div>
+
+  <!-- TAB: プラン比較 -->
+  <div id="tab-plans" class="tab-panel active">
+    <div class="billing-toggle">
+      <span>契約形態：</span>
+      <button class="bill-btn active" id="ba" onclick="setBill('annual')">年契約</button>
+      <button class="bill-btn" id="bm" onclick="setBill('monthly')">月契約</button>
+    </div>
+    <div class="plans-grid" id="plans-grid"></div>
+
+    <div class="section-label">機能比較</div>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>機能</th><th>ライト</th><th>スタンダード</th><th>プロ</th><th>エンタープライズ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>管理者数</td><td>1名</td><td>4名</td><td>10名</td><td>11名〜</td></tr>
+        <tr><td>ドメイン</td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td></tr>
+        <tr><td>ストレージ</td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td></tr>
+        <tr><td>復元機能</td><td><span class="cx">✕</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
+        <tr><td>デバイス別出し分け</td><td><span class="cx">✕</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
+        <tr><td>エディター</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
+        <tr><td>レポート</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
+        <tr><td>ヒートマップ</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td></tr>
+        <tr><td>サポート（チャット・対話）</td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td><td><span class="inf">∞</span></td></tr>
+        <tr><td>LP制作代行</td><td>都度見積</td><td>都度見積</td><td>都度見積</td><td>都度見積</td></tr>
+      </tbody>
+    </table>
+
+    <div class="merit-box purple">
+      <div class="merit-title">ライト → スタンダード以上へのアップグレード</div>
+      <div class="merit-item">復元機能が解放。誤編集・事故時にページを即座に巻き戻せるように</div>
+      <div class="merit-item">デバイス別出し分けが使えるようになり、PC・スマホ別のLPでCVR最適化が可能に</div>
+      <div class="merit-item">管理者4名まで追加でき、チームや代理店との分業体制を一気に構築できる</div>
+    </div>
+    <div class="merit-box green" style="margin-top:10px;">
+      <div class="merit-title">スタンダード → プロへのアップグレード</div>
+      <div class="merit-item">管理者が10名まで拡張。複数代理店・大規模チームの並行運用に対応</div>
+      <div class="merit-item">1アカウントで複数ブランド・プロジェクトを横断管理できる体制が整う</div>
+    </div>
+    <div class="merit-box blue" style="margin-top:10px;">
+      <div class="merit-title">年契約にすると節約できる金額</div>
+      <div class="merit-item">ライト：年間 ¥252,000 削減（月¥21,000相当）</div>
+      <div class="merit-item">スタンダード：年間 ¥252,000 削減（月¥21,000相当）</div>
+      <div class="merit-item">プロ：年間 ¥360,000 削減（月¥30,000相当）</div>
+    </div>
+    <p class="note">※ PV数・ページ数・ABテスト数・ドメイン数・ストレージはすべて無制限・定額<br>※ オプションは各+¥30,000/月。ポップアップ＋フォームの2つ同時追加で¥10,000 OFF</p>
+  </div>
+
+  <!-- TAB: 拡張オプション -->
+  <div id="tab-opts" class="tab-panel">
+    <div class="campaign-bar">キャンペーン：オプション2つ同時追加で ¥10,000 OFF → ポップアップ＋フォームで合計 ¥50,000/月（通常 ¥60,000）</div>
+    <div class="opts-grid">
+
+      <div class="opt-card">
+        <div class="opt-name">ポップアップ</div>
+        <div class="opt-price">+¥30,000 / 月</div>
+        <div class="opt-desc">LP上でスクロール・離脱・時間経過などユーザーの行動を検知し、自動でバナーを表示。LP上の「店員」として機能し、CVRを直接底上げします。</div>
+        <div class="opt-merits-title">主なメリット</div>
+        <div class="opt-merit">離脱しようとしているユーザーに期間限定オファーを訴求し、取りこぼしを防止</div>
+        <div class="opt-merit">追従バナーでページのどこにいてもCTAを常時表示し、申込みへの導線を維持</div>
+        <div class="opt-merit">定額制なので成果が上がっても費用が増えない（他社は従量課金が多い）</div>
+        <div class="opt-merit">設定不要でレポート自動反映。ポップアップのABテストも即座に実施できる</div>
+        <div class="opt-target">こんな方に：LPの読了率は高いのにCVに繋がらない / 多くのユーザーが離脱している</div>
+      </div>
+
+      <div class="opt-card">
+        <div class="opt-name">フォーム</div>
+        <div class="opt-price">+¥30,000 / 月</div>
+        <div class="opt-desc">お問合せ・資料請求・申込などのWebフォームをノーコードで作成。LP・バージョン別の申込データが設定なしでそのままレポートされます。</div>
+        <div class="opt-merits-title">主なメリット</div>
+        <div class="opt-merit">設定不要でデータが蓄積。LP別・バージョン別のCV・離脱率を即座に把握</div>
+        <div class="opt-merit">クリック操作だけで最短1分でフォーム作成。何個でも作り放題（他社は従量課金）</div>
+        <div class="opt-merit">CRM機能でお問合せユーザーとのコミュニケーション・ナーチャリングが可能</div>
+        <div class="opt-merit">Squad beyondの純正統合なので外部ツールとの連携設定が一切不要</div>
+        <div class="opt-target">こんな方に：リード系案件をお持ちの方 / お問合せフォームがあるLPを運用している方</div>
+      </div>
+
+      <div class="opt-card">
+        <div class="opt-name">ファイル容量アップ</div>
+        <div class="opt-price">+¥30,000〜 / 月（100万PVまで）</div>
+        <div class="opt-desc">大容量の画像・動画・GIFをそのままアップロード可能に。圧縮せずに長尺動画も掲載でき、LPの表現力が大きく広がります。</div>
+        <div class="opt-merits-title">主なメリット</div>
+        <div class="opt-merit">動画圧縮作業が不要になり、制作工数を大幅削減</div>
+        <div class="opt-merit">長尺動画・高解像度画像・GIFをそのまま使え、表現の幅が広がる</div>
+        <div class="opt-merit">画像・動画中心のLPでも品質を落とさずに配信できる</div>
+        <div class="opt-target">こんな方に：動画圧縮に時間を取られている / 長い動画やGIFをLPで使いたい</div>
+      </div>
+
+      <div class="opt-card">
+        <div class="opt-name">アテンダント</div>
+        <div class="opt-price">+¥30,000〜 / 月</div>
+        <div class="opt-desc">毎日1回、Squad beyondのデータを自動でスプレッドシートに書き出し。毎朝7時に自動更新されるため、レポート集計作業から解放されます。</div>
+        <div class="opt-merits-title">主なメリット</div>
+        <div class="opt-merit">毎日数時間かかるレポート手作業が完全自動化される</div>
+        <div class="opt-merit">FVER・SVERなどSquad beyond独自指標をそのままスプレッドシートに反映</div>
+        <div class="opt-merit">手動更新ミス・数式崩れのストレスがゼロになる</div>
+        <div class="opt-merit">定期報告資料が自動生成され、提案・改善にかける時間を確保できる</div>
+        <div class="opt-target">こんな方に：レポート集計に毎日時間がかかる / ページごとに個別レポートが必要な方</div>
+      </div>
+
+      <div class="opt-card span2">
+        <div class="opt-name">データベース連携</div>
+        <div class="opt-price">+¥50,000〜 / 月</div>
+        <div class="opt-desc">Squad beyondのレポートに表示されない生データをBigQueryやその他DBに自動連携。標準レポートでは取れない数十項目のデータが自動で手に入ります。</div>
+        <div class="opt-merits-title">主なメリット</div>
+        <div class="opt-merits-inner">
+          <div class="opt-merit">BigQuery等の既存DBと統合し、高度なデータ分析環境が実現</div>
+          <div class="opt-merit">自動連携なので手動データ移行の工数がゼロになる</div>
+          <div class="opt-merit">標準レポートでは取れない細かい指標も自動収集できる</div>
+          <div class="opt-merit">様々な自動化ワークフローと組み合わせて活用可能</div>
+        </div>
+        <div class="opt-target">こんな方に：社内で高度なデータ管理をしている / 細かい解析データを手軽に収集したい / 自動化が好きな方</div>
+      </div>
+
+    </div>
+    <p class="note">※ ポップアップ＋フォームの2つ同時追加で¥10,000 OFF（合計¥50,000/月）<br>※ ファイル容量アップ・アテンダント・データベース連携は利用状況により金額が変動する場合あり</p>
+  </div>
+
+  <!-- TAB: エンタープライズ -->
+  <div id="tab-ent" class="tab-panel">
+    <p style="font-size:13px;color:var(--text-sub);margin-bottom:16px;">11名以上から対応のチーム向けプラン。人数が増えるほど1名あたりの単価が下がります。</p>
+    <div class="section-label">人数別 月額料金（1名あたり）</div>
+    <div class="ent-grid">
+      <div class="ent-card"><div class="ent-range">10〜14名</div><div class="ent-price">年契約 ¥19,800 / 名・月　　月契約 ¥22,800 / 名・月</div></div>
+      <div class="ent-card"><div class="ent-range">15〜19名</div><div class="ent-price">年契約 ¥19,000 / 名・月　　月契約 ¥22,000 / 名・月</div></div>
+      <div class="ent-card"><div class="ent-range">20〜24名</div><div class="ent-price">年契約 ¥18,000 / 名・月　　月契約 ¥21,000 / 名・月</div></div>
+      <div class="ent-card"><div class="ent-range">25〜29名</div><div class="ent-price">年契約 ¥17,500 / 名・月　　月契約 ¥20,500 / 名・月</div></div>
+      <div class="ent-card" style="grid-column:span 2;"><div class="ent-range">30名〜</div><div class="ent-price">年契約 ¥17,000 / 名・月　　月契約 ¥20,000 / 名・月</div></div>
+    </div>
+    <div class="merit-box blue">
+      <div class="merit-title">エンタープライズのメリット</div>
+      <div class="merit-item">管理者11名以上の体制が構築でき、複数代理店・複数ブランドの一元管理に最適</div>
+      <div class="merit-item">人数が増えるほど1名あたり単価が低下。30名以上では¥17,000/名・月〜と高いコスパ</div>
+      <div class="merit-item">全プラン共通のサポート（チャット・対話・ドメイン・ストレージ無制限）はそのまま利用可能</div>
+    </div>
+    <p class="note">※ 詳細はお問合せください。利用状況や契約内容により条件が変わる場合があります。</p>
+  </div>
+
+  <!-- TAB: 提案まとめ -->
+  <div id="tab-sum" class="tab-panel">
+    <p style="font-size:13px;color:var(--text-sub);margin-bottom:16px;">ユーザーの状況に合わせて提案内容を選んでください。</p>
+    <table class="summary">
+      <thead>
+        <tr>
+          <th style="width:28%;">ユーザーの状況</th>
+          <th style="width:22%;">おすすめ提案</th>
+          <th>提案理由・トークポイント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ライト使用中・1人で運用</td><td><span class="pill pill-purple">スタンダードへ</span></td><td>復元機能・デバイス別出し分けが解放され、CVR改善の手段が一気に広がります</td></tr>
+        <tr><td>ライト使用中・チームで使いたい</td><td><span class="pill pill-purple">スタンダードへ</span></td><td>管理者4名まで追加可能。代理店共有・チーム分業がすぐ実現します</td></tr>
+        <tr><td>スタンダード使用中・メンバーが増加</td><td><span class="pill pill-green">プロへ</span></td><td>管理者10名まで対応。複数代理店の並行運用に必要な体制が整います</td></tr>
+        <tr><td>LP読了率は高いのにCVが取れない</td><td><span class="pill pill-blue">ポップアップ追加</span></td><td>離脱防止・追従バナーで取りこぼしを防止。定額なので成果が上がっても費用は増えません</td></tr>
+        <tr><td>リード獲得系の案件がある</td><td><span class="pill pill-blue">フォーム追加</span></td><td>1分作成・無制限。LP別CVが自動でレポートされ分析が楽になります</td></tr>
+        <tr><td>ポップアップもフォームも検討中</td><td><span class="pill pill-amber">両方同時追加</span></td><td>2つ同時で¥10,000 OFF！合計¥50,000/月になるので同時申込が断然お得です</td></tr>
+        <tr><td>レポート集計に毎日時間がかかる</td><td><span class="pill pill-blue">アテンダント追加</span></td><td>毎朝7時に自動でスプレッドシートが更新。数時間の手作業が完全になくなります</td></tr>
+        <tr><td>動画・GIF中心のLPを作りたい</td><td><span class="pill pill-blue">ファイル容量アップ</span></td><td>圧縮なしで大容量ファイルをそのまま掲載。制作工数が大幅削減できます</td></tr>
+        <tr><td>月契約で使用中・継続が決まっている</td><td><span class="pill pill-green">年契約に切り替え</span></td><td>ライト・スタンダードで年間¥252,000、プロで¥360,000の削減。継続が決まっているなら迷う理由なし</td></tr>
+        <tr><td>11名以上で使いたい</td><td><span class="pill pill-purple">エンタープライズへ</span></td><td>人数が増えるほど単価が低下。30名以上なら¥17,000/名・月〜のコスパを実現</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  const PA = { annual: [98000, 148000, 198000], monthly: [119000, 169000, 228000] };
+  const PN = ['ライト', 'スタンダード', 'プロ'];
+  const PU = ['管理者 1名', '管理者 4名', '管理者 10名'];
+  const DIFF = [21000, 21000, 30000];
+  let curBill = 'annual';
+
+  function fmt(n) { return '¥' + n.toLocaleString(); }
+
+  function renderPlans(type) {
+    const p = PA[type];
+    let h = '';
+    for (let i = 0; i < 3; i++) {
+      const save = type === 'annual'
+        ? `<div class="save-badge">年契約で年間 ${fmt(DIFF[i] * 12)} 削減</div>` : '';
+      h += `<div class="plan-card">
+        <div class="plan-name">${PN[i]}</div>
+        <div class="plan-price">${fmt(p[i])}<small> / 月額</small></div>
+        <div class="plan-users">${PU[i]}</div>
+        ${save}
+      </div>`;
+    }
+    h += `<div class="plan-card enterprise">
+      <div class="plan-name">エンタープライズ</div>
+      <div class="plan-price" style="font-size:15px;">お問合せください</div>
+      <div class="plan-users">管理者 11名〜</div>
+    </div>`;
+    document.getElementById('plans-grid').innerHTML = h;
+  }
+
+  function setBill(type) {
+    curBill = type;
+    document.getElementById('ba').classList.toggle('active', type === 'annual');
+    document.getElementById('bm').classList.toggle('active', type === 'monthly');
+    renderPlans(type);
+  }
+
+  function setTab(name, el) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  renderPlans('annual');
+</script>
+</body>
+</html>
